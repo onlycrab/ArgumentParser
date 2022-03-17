@@ -1,0 +1,174 @@
+<html>
+<head>
+<title>DependenciesExample.java</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre>
+<span class="s0">package </span><span class="s1">com.github.onlycrab.argParser.demo;</span>
+
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.Argument;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentStorage;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentException;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentNotFoundException;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentParser;</span>
+
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+<span class="s0">import </span><span class="s1">java.util.Locale;</span>
+
+<span class="s2">/**
+ * Example to demonstrate the use of the arguments dependencies.
+ *
+ * @author Roman Rynkovich
+ */</span>
+<span class="s0">class </span><span class="s1">DependenciesExample {
+    </span><span class="s0">private static final </span><span class="s1">String ARG_GET = </span><span class="s3">&quot;g&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_GET_TIME = </span><span class="s3">&quot;time&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_GET_DATE = </span><span class="s3">&quot;date&quot;</span><span class="s1">; 
+ 
+    </span><span class="s0">private static final </span><span class="s1">String ARG_DATE_FORMAT = </span><span class="s3">&quot;df&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_DF_SHORT = </span><span class="s3">&quot;short&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_DF_LONG = </span><span class="s3">&quot;long&quot;</span><span class="s1">; 
+ 
+    </span><span class="s0">private static final </span><span class="s1">String ARG_TIME_FORMAT = </span><span class="s3">&quot;tf&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_TF_12 = </span><span class="s3">&quot;12&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String PARAM_TF_24 = </span><span class="s3">&quot;24&quot;</span><span class="s1">; 
+ 
+    @SuppressWarnings(</span><span class="s3">&quot;IfCanBeSwitch&quot;</span><span class="s1">) 
+    </span><span class="s0">public static </span><span class="s1">String main(String[] args){ 
+        ArgumentStorage storage; 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s2">//Create storage object</span><span class="s1">
+            storage = initArgs(); 
+ 
+            </span><span class="s2">//Add dependencies</span><span class="s1"> 
+            storage.addDependence(ARG_DATE_FORMAT, ARG_GET); 
+            storage.addDependence(ARG_TIME_FORMAT, ARG_GET); 
+            storage.addConflict(ARG_DATE_FORMAT, ARG_TIME_FORMAT); 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentException e) { 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+ 
+        </span><span class="s2">//Parse argument values</span><span class="s1"> 
+        ArgumentParser.parse(storage, args); 
+ 
+        String help = storage.getSystemHelp(ArgumentStorage.HELP_SHORT_NAME); 
+        </span><span class="s0">if </span><span class="s1">(help != </span><span class="s0">null</span><span class="s1">){ 
+            </span><span class="s0">return </span><span class="s1">help; 
+        } 
+ 
+        </span><span class="s2">//Check arguments dependencies</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(!storage.isRequireFilled() || storage.isConflict()){ 
+            </span><span class="s0">return </span><span class="s3">&quot;Wrong arguments data : &quot; </span><span class="s1">+ storage.getMessage(); 
+        } 
+ 
+        </span><span class="s2">//Main program</span><span class="s1"> 
+        </span><span class="s0">try </span><span class="s1">{ 
+            Locale locale = </span><span class="s0">new </span><span class="s1">Locale(</span><span class="s3">&quot;en&quot;</span><span class="s1">); 
+            String getValue = storage.getValue(ARG_GET); 
+            String paramValue; 
+            SimpleDateFormat formatter; 
+            </span><span class="s0">if </span><span class="s1">(getValue.equals(PARAM_GET_DATE)){ 
+                </span><span class="s0">if </span><span class="s1">(storage.isFilled(ARG_DATE_FORMAT)){ 
+                    paramValue = storage.getValue(ARG_DATE_FORMAT); 
+                    </span><span class="s0">if </span><span class="s1">(paramValue.equals(PARAM_DF_LONG)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;EEEE, d MMMM, yyyy&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else if </span><span class="s1">(paramValue.equals(PARAM_DF_SHORT)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;yyyy.MM.dd&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return </span><span class="s3">&quot;Error : date format &lt;&quot; </span><span class="s1">+ paramValue + </span><span class="s3">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(storage.isDeclared(ARG_TIME_FORMAT)) { 
+                    </span><span class="s0">return </span><span class="s3">&quot;Error : cant format date to time&quot;</span><span class="s1">; 
+                } </span><span class="s0">else </span><span class="s1">{ 
+                    formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;E, d MMM, yy&quot;</span><span class="s1">, locale); 
+                    </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                } 
+            } </span><span class="s0">else if </span><span class="s1">(getValue.equals(PARAM_GET_TIME)){ 
+                </span><span class="s0">if </span><span class="s1">(storage.isFilled(ARG_TIME_FORMAT)){ 
+                    paramValue = storage.getValue(ARG_TIME_FORMAT); 
+                    </span><span class="s0">if </span><span class="s1">(paramValue.equals(PARAM_TF_24)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;HH:mm&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else if </span><span class="s1">(paramValue.equals(PARAM_TF_12)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;h:m:s a&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return </span><span class="s3">&quot;Error : time format &lt;&quot; </span><span class="s1">+ paramValue + </span><span class="s3">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(storage.isDeclared(ARG_DATE_FORMAT)){ 
+                    </span><span class="s0">return </span><span class="s3">&quot;Error : cant format time to date&quot;</span><span class="s1">; 
+                } </span><span class="s0">else </span><span class="s1">{ 
+                    formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;H:m:s.S z&quot;</span><span class="s1">, locale); 
+                    </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                } 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                </span><span class="s0">return </span><span class="s3">&quot;Error : get command &lt;&quot; </span><span class="s1">+ getValue + </span><span class="s3">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+            } 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentNotFoundException e){ 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+    } 
+ 
+    </span><span class="s0">private static </span><span class="s1">ArgumentStorage initArgs() </span><span class="s0">throws </span><span class="s1">ArgumentException{ 
+        ArgumentStorage storage = </span><span class="s0">new </span><span class="s1">ArgumentStorage(</span><span class="s0">true</span><span class="s1">); 
+        </span><span class="s2">//Add arguments data</span><span class="s1"> 
+        storage.setDescription(</span><span class="s3">&quot;Awesome utility to print current daytime.&quot;</span><span class="s1">); 
+        storage.setExample(</span><span class="s3">&quot;To get current time in 24h format type</span><span class="s0">\n</span><span class="s3">&quot; </span><span class="s1">+ 
+                String.format(</span><span class="s3">&quot;  -%s %s -%s %s</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">, ARG_GET, PARAM_GET_TIME, ARG_TIME_FORMAT, PARAM_TF_24)  + 
+                </span><span class="s3">&quot;To get current date type</span><span class="s0">\n</span><span class="s3">  -&quot; </span><span class="s1">+ ARG_GET + </span><span class="s3">&quot; &quot; </span><span class="s1">+ PARAM_GET_DATE); 
+        storage.add(</span><span class="s0">new </span><span class="s1">Argument(
+                </span><span class="s2">//short name</span>
+                <span class="s1">ARG_GET,
+                </span><span class="s2">//long name</span>
+                <span class="s3">&quot;get&quot;</span><span class="s1">,
+                </span><span class="s2">//valueDefault</span>
+                <span class="s0">null</span><span class="s1">,
+                </span><span class="s2">//isRequiredBeDeclared</span>
+                <span class="s0">true</span><span class="s1">,
+                </span><span class="s2">//isRequiredBeFilled</span>
+                <span class="s0">true</span><span class="s1">,
+                </span><span class="s2">//parameters</span>
+                <span class="s0">null</span><span class="s1">,
+                </span><span class="s2">//description</span>
+                <span class="s3">&quot;Command to get daytime data. Can be &lt;&quot; </span><span class="s1">+ PARAM_GET_TIME + </span><span class="s3">&quot;&gt; or &lt;&quot; </span><span class="s1">+ PARAM_GET_DATE + </span><span class="s3">&quot;&gt;.&quot;</span><span class="s1">,
+                </span><span class="s2">//descriptionDetailed</span>
+                <span class="s3">&quot;Command to get daytime data. Type &lt;&quot; </span><span class="s1">+ PARAM_GET_TIME + </span><span class="s3">&quot;&gt; to get current time, or &lt;&quot; </span><span class="s1">+
+                        PARAM_GET_DATE + </span><span class="s3">&quot;&gt; to get current date.&quot;</span>
+        <span class="s1">));
+        storage.add(</span><span class="s0">new </span><span class="s1">Argument( 
+                ARG_DATE_FORMAT, 
+                </span><span class="s3">&quot;dformat&quot;</span><span class="s1">, 
+                </span><span class="s0">null</span><span class="s1">, 
+                </span><span class="s0">false</span><span class="s1">, 
+                </span><span class="s0">true</span><span class="s1">, 
+                </span><span class="s3">&quot;STRING&quot;</span><span class="s1">, 
+                </span><span class="s3">&quot;Date format. Can be &lt;&quot; </span><span class="s1">+ PARAM_DF_LONG + </span><span class="s3">&quot;&gt; or &lt;&quot; </span><span class="s1">+ PARAM_DF_SHORT + </span><span class="s3">&quot;&gt;.&quot;</span><span class="s1">, 
+                </span><span class="s3">&quot;Date format. Type &lt;&quot; </span><span class="s1">+ PARAM_DF_SHORT + </span><span class="s3">&quot;&gt; for YYYY.MM.DD format, or &lt;&quot; </span><span class="s1">+ 
+                        PARAM_DF_LONG + </span><span class="s3">&quot;&gt; for full format.&quot;</span><span class="s1"> 
+        )); 
+        storage.add(</span><span class="s0">new </span><span class="s1">Argument( 
+                ARG_TIME_FORMAT, 
+                </span><span class="s3">&quot;tformat&quot;</span><span class="s1">, 
+                </span><span class="s0">null</span><span class="s1">, 
+                </span><span class="s0">false</span><span class="s1">, 
+                </span><span class="s0">true</span><span class="s1">, 
+                </span><span class="s3">&quot;STRING&quot;</span><span class="s1">, 
+                </span><span class="s3">&quot;Time format. Can be &lt;&quot; </span><span class="s1">+ PARAM_TF_12 + </span><span class="s3">&quot;&gt; or &lt;&quot; </span><span class="s1">+ PARAM_TF_24 + </span><span class="s3">&quot;&gt;.&quot;</span><span class="s1">, 
+                </span><span class="s3">&quot;Time format. Type &lt;&quot; </span><span class="s1">+ PARAM_TF_12 + </span><span class="s3">&quot;&gt; to get current time in 12h format, or &lt;&quot; </span><span class="s1">+ 
+                        PARAM_TF_24 + </span><span class="s3">&quot;&gt; - in 24h format.&quot;</span><span class="s1"> 
+        )); 
+        </span><span class="s0">return </span><span class="s1">storage; 
+    } 
+} 
+</span></pre>
+</body>
+</html>

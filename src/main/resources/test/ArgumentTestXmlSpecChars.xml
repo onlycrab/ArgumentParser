@@ -1,0 +1,23 @@
+<?com.github.onlycrab.argParser.arguments.xml version="1.0" encoding="UTF-8"?>
+<arguments xmlns="argParser">
+    <info
+            description = "some description"
+            usage = "some &lt;br&gt; usage"
+    />
+    <argument
+            shortName="at1"
+            longName="argument-test1"
+            isRequiredDeclared="false"
+            isRequiredFilled="false"
+            description="&lt;br&gt;some description"
+            descriptionDetailed="some &lt;br/&gt;detailed&lt;br&gt; description"
+    />
+    <argument
+            shortName="at2"
+            longName="argument-test2"
+            isRequiredDeclared="false"
+            isRequiredFilled="false"
+            description="some description"
+            descriptionDetailed="some detailed &lt;br&gt;description&lt;br/&gt;&lt;br&gt;"
+    />
+</arguments>

@@ -1,0 +1,40 @@
+<?com.github.onlycrab.argParser.arguments.xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="argParser" elementFormDefault="qualified">
+    <element name="arguments">
+        <complexType>
+            <sequence>
+                <element name="info" minOccurs="0">
+                    <complexType>
+                        <attribute name="description" type="string"/>
+                        <attribute name="usage" type="string"/>
+                        <attribute name="example" type="string"/>
+                    </complexType>
+                </element>
+                <element name="argument" minOccurs="0" maxOccurs="unbounded">
+                    <complexType>
+                        <attribute name="shortName" type="string" use="required"/>
+                        <attribute name="longName" type="string" use="required"/>
+                        <attribute name="valueDefault" type="string"/>
+                        <attribute name="isRequiredDeclared" type="boolean" use="required"/>
+                        <attribute name="isRequiredFilled" type="boolean" use="required"/>
+                        <attribute name="parameters" type="string"/>
+                        <attribute name="description" type="string"/>
+                        <attribute name="descriptionDetailed" type="string"/>
+                    </complexType>
+                </element>
+                <element name="dependence" minOccurs="0" maxOccurs="unbounded">
+                    <complexType>
+                        <attribute name="nameDependent" type="string" use="required"/>
+                        <attribute name="nameOn" type="string" use="required"/>
+                    </complexType>
+                </element>
+                <element name="conflict" minOccurs="0" maxOccurs="unbounded">
+                    <complexType>
+                        <attribute name="nameFirst" type="string" use="required"/>
+                        <attribute name="nameSecond" type="string" use="required"/>
+                    </complexType>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+</schema>

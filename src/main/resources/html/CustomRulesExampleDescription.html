@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>SimplyExampleDescription</title>
+<style type="text/css">
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,128); font-family: "Monospaced"; }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre><span class="s1">This is a example of using custom rules.
+You can create own rules for arguments and check is it satisfied.
+
+First, create a class that extends </span><span class="s3">Rule</span><span class="s1"> and override the method </span><span class="s3">isSatisfied()</span><span class="s1">.
+Then add to the rule the arguments that should execute it by the method </span><span class="s3">addTarget(Argument)</span><span class="s1">.
+Then add rules to storage object by </span><span class="s3">ArgumentsStorage#addRule(Rule)</span><span class="s1">.
+After parsing, call the </span><span class="s3">ArgumentsStorage#isRulesSatisfied()</span><span class="s1">: the result will be <b>false</b> if any rule returns <b>false</b> from </span><span class="s3">Rule#isSatisfied()</span><span class="s1">, otherwise the result will be <b>true</b>.
+
+Demonstrator can check if value is an email.
+Available arguments : <b>e(email)</b>.
+Try this:</span>
+<span class="s2">  -e some@example.com
+  -e notAnEmail
+  -e @error.org
+</span></pre>
+</body>
+</html>

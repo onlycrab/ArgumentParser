@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>SimplyExample.java</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre>
+<span class="s0">package </span><span class="s1">com.github.onlycrab.argParser.demo;</span>
+
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.Argument;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentStorage;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentException;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentParser;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentNotFoundException;</span>
+
+<span class="s2">/**
+ * Simple example to demonstrate the use of arguments.
+ *
+ * @author Roman Rynkovich
+ */</span>
+<span class="s0">class </span><span class="s1">SimplyExample {
+    </span><span class="s0">public static </span><span class="s1">String main(String[] args){ 
+        </span><span class="s2">//Create storage object</span><span class="s1"> 
+        ArgumentStorage storage = </span><span class="s0">new </span><span class="s1">ArgumentStorage(); 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s2">//Add arguments data to storage</span><span class="s1"> 
+            storage.add(</span><span class="s0">new </span><span class="s1">Argument(</span><span class="s3">&quot;a&quot;</span><span class="s1">, </span><span class="s3">&quot;alpha&quot;</span><span class="s1">)); 
+            storage.add(</span><span class="s0">new </span><span class="s1">Argument(</span><span class="s3">&quot;b&quot;</span><span class="s1">, </span><span class="s3">&quot;beta&quot;</span><span class="s1">)); 
+ 
+            </span><span class="s2">//Parse argument values into created storage with arguments data</span><span class="s1"> 
+            ArgumentParser.parse(storage, args); 
+ 
+            </span><span class="s0">return </span><span class="s1">getResult(storage, </span><span class="s3">&quot;a&quot;</span><span class="s1">) + getResult(storage, </span><span class="s3">&quot;b&quot;</span><span class="s1">); 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentException | ArgumentNotFoundException e) { 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+    } 
+ 
+    </span><span class="s0">private static </span><span class="s1">String getResult(ArgumentStorage args, String shortName) </span><span class="s0">throws </span><span class="s1">ArgumentNotFoundException { 
+        StringBuilder sb = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+        </span><span class="s0">if </span><span class="s1">(args.isDeclared(shortName)) { 
+            </span><span class="s0">if </span><span class="s1">(args.isFilled(shortName)) { 
+                sb.append(String.format(</span><span class="s3">&quot;Argument &lt;%s(%5s)&gt; : declared, filled, value = &lt;%s&gt;</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">, 
+                        shortName, args.getArgument(shortName).getLongName(), args.getValue(shortName))); 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                sb.append(String.format(</span><span class="s3">&quot;Argument &lt;%s(%5s)&gt; : declared, but not filled</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">, 
+                        shortName, args.getArgument(shortName).getLongName())); 
+            } 
+        } </span><span class="s0">else </span><span class="s1">{ 
+            sb.append(String.format(</span><span class="s3">&quot;Argument &lt;%s(%5s)&gt; : not declared, not filled</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">, 
+                    shortName, args.getArgument(shortName).getLongName())); 
+        } 
+        </span><span class="s0">return </span><span class="s1">sb.toString(); 
+    } 
+} 
+</span></pre>
+</body>
+</html>

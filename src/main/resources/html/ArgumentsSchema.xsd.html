@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>ArgumentsSchema.xsd</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,0); font-style: italic; }
+.s1 { color: rgb(0,0,255); font-weight: bold; }
+.s2 { color: rgb(0,0,0); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,0); }
+.s5 { color: rgb(0,0,128); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre>
+<span class="s0">&lt;?</span><span class="s1">arguments.xml </span><span class="s3">version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s4">&lt;</span><span class="s5">schema </span><span class="s1">xmlns</span><span class="s3">=&quot;http://www.w3.org/2001/XMLSchema&quot; </span><span class="s1">targetNamespace</span><span class="s3">=&quot;argumentParser&quot; </span><span class="s1">elementFormDefault</span><span class="s3">=&quot;qualified&quot;</span><span class="s4">&gt;
+    </span><span class="s4">&lt;</span><span class="s5">element </span><span class="s1">name</span><span class="s3">=&quot;arguments&quot;</span><span class="s4">&gt;
+        </span><span class="s4">&lt;</span><span class="s5">complexType</span><span class="s4">&gt;
+            </span><span class="s4">&lt;</span><span class="s5">sequence</span><span class="s4">&gt;
+                </span><span class="s4">&lt;</span><span class="s5">element </span><span class="s1">name</span><span class="s3">=&quot;info&quot; </span><span class="s1">minOccurs</span><span class="s3">=&quot;0&quot;</span><span class="s4">&gt;
+                    </span><span class="s4">&lt;</span><span class="s5">complexType</span><span class="s4">&gt;
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;description&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;usage&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;example&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;/</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;/</span><span class="s5">element</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;</span><span class="s5">element </span><span class="s1">name</span><span class="s3">=&quot;argument&quot; </span><span class="s1">minOccurs</span><span class="s3">=&quot;0&quot; </span><span class="s1">maxOccurs</span><span class="s3">=&quot;unbounded&quot;</span><span class="s4">&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;shortName&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;longName&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;valueDefault&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;isRequiredDeclared&quot; </span><span class="s1">type</span><span class="s3">=&quot;boolean&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;isRequiredFilled&quot; </span><span class="s1">type</span><span class="s3">=&quot;boolean&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;parameters&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;description&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;descriptionDetailed&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;/</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;/</span><span class="s5">element</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;</span><span class="s5">element </span><span class="s1">name</span><span class="s3">=&quot;dependence&quot; </span><span class="s1">minOccurs</span><span class="s3">=&quot;0&quot; </span><span class="s1">maxOccurs</span><span class="s3">=&quot;unbounded&quot;</span><span class="s4">&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;nameDependent&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;nameOn&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;/</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;/</span><span class="s5">element</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;</span><span class="s5">element </span><span class="s1">name</span><span class="s3">=&quot;conflict&quot; </span><span class="s1">minOccurs</span><span class="s3">=&quot;0&quot; </span><span class="s1">maxOccurs</span><span class="s3">=&quot;unbounded&quot;</span><span class="s4">&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;nameFirst&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                        </span><span class="s4">&lt;</span><span class="s5">attribute </span><span class="s1">name</span><span class="s3">=&quot;nameSecond&quot; </span><span class="s1">type</span><span class="s3">=&quot;string&quot; </span><span class="s1">use</span><span class="s3">=&quot;required&quot;</span><span class="s4">/&gt;</span><span class="s2"> 
+                    </span><span class="s4">&lt;/</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+                </span><span class="s4">&lt;/</span><span class="s5">element</span><span class="s4">&gt;</span><span class="s2"> 
+            </span><span class="s4">&lt;/</span><span class="s5">sequence</span><span class="s4">&gt;</span><span class="s2"> 
+        </span><span class="s4">&lt;/</span><span class="s5">complexType</span><span class="s4">&gt;</span><span class="s2"> 
+    </span><span class="s4">&lt;/</span><span class="s5">element</span><span class="s4">&gt;</span><span class="s2"></span>
+<span class="s4">&lt;/</span><span class="s5">schema</span><span class="s4">&gt;</span></pre>
+</body>
+</html>

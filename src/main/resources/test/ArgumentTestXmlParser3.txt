@@ -1,0 +1,41 @@
+<?com.github.onlycrab.argParser.arguments.xml version="1.0" encoding="UTF-8"?>
+<com.github.onlycrab.argParser.arguments>
+    <info
+            description = "some description"
+            usage = "some usage"
+            example = "some example"
+    />
+    <argument
+            shortName="at1"
+            longName="argument-test1"
+    <argument
+            shortName="at2"
+            longName="argument-test2"
+            isRequiredDeclared="false"
+            isRequiredFilled="false"
+    />
+    <argument
+            shortName="at3"
+            longName="argument-test3"
+            isRequiredDeclared="true"
+            isRequiredFilled="false"
+    />
+    <argument
+            shortName="at4"
+            longName="argument-test4"
+            isRequiredDeclared="false"
+            isRequiredFilled="false"
+    />
+    <dependence
+            nameDependent="at1"
+            nameOn="at2"
+    />
+    <dependence
+            nameDependent="at4"
+            nameOn="at2"
+    />
+    <conflict
+            nameFirst="at3"
+            nameSecond="at4"
+    />
+</com.github.onlycrab.argParser.arguments>

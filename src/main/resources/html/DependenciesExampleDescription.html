@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>SimplyExampleDescription</title>
+<style type="text/css">
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,128); font-family: "Monospaced"; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre><span class="s1">This is a example of using argument dependencies.
+Demonstrator can return current date or time in different formats.
+Available arguments : <b>g(get)</b>, <b>df(dformat)</b>, <b>tf(tformat)</b>.
+Arguments are subject to the following restrictions:
+  1. <b>g</b> is must be filled;
+  2. <b>df</b> and <b>tf</b> can be used only with <b>g</b>;
+  3. <b>df</b> and <b>tf</b> cant be used at the same time.
+Also you cant type '<b>-h</b>' for get utility help message.
+Try this:</span>
+<span class="s2">  -g date
+  -g
+  -df long
+  -g time -tf 12
+  -g date --dformat short -tf 24
+  -h g
+</span></pre>
+</body>
+</html>

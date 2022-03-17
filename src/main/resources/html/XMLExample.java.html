@@ -1,0 +1,214 @@
+<html>
+<head>
+<title>XMLExample.java</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+.s4 { color: rgb(128,128,128); font-weight: bold; font-style: italic; }
+.s5 { color: rgb(0,128,0); font-weight: bold; }
+.s6 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD>XMLExample.java</TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">com.github.onlycrab.argParser.demo;</span>
+
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentParser;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentStorage;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentNotFoundException;</span>
+
+<span class="s0">import </span><span class="s1">java.io.File;</span>
+<span class="s0">import </span><span class="s1">java.io.InputStream;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat;</span>
+<span class="s0">import </span><span class="s1">java.util.Date;</span>
+<span class="s0">import </span><span class="s1">java.util.Locale;</span>
+
+<span class="s2">/**
+ * Example to demonstrate loading data from an external XML source. 
+ * 
+ * </span><span class="s3">&lt;p&gt;</span><span class="s2">Arguments, their parameters, description and dependencies may not be defined in the source code, but 
+ * loaded from an external XML resource: from an incoming stream or file. To do this, you need to use the 
+ * {</span><span class="s4">@link </span><span class="s2">ArgumentStorage#read(InputStream, String)} or {</span><span class="s4">@link </span><span class="s2">ArgumentStorage#read(File, String)} methods: 
+ * the read data will be added to the existing one.</span><span class="s3">&lt;/p&gt;</span>
+ <span class="s2">*
+ * @author Roman Rynkovich
+ */</span>
+<span class="s0">class </span><span class="s1">XMLExample {
+    @SuppressWarnings(</span><span class="s5">&quot;IfCanBeSwitch&quot;</span><span class="s1">) 
+    </span><span class="s0">public static </span><span class="s1">String main(String[] args){ 
+        ArgumentStorage storage; 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s2">//Load arguments data from external XML source</span><span class="s1"> 
+            storage = </span><span class="s0">new </span><span class="s1">ArgumentStorage(</span><span class="s0">true</span><span class="s1">); 
+            storage.read(storage.getClass().getClassLoader().getResourceAsStream(</span><span class="s5">&quot;/com/github/onlycrab/argumentParser/demo/XMLExample.xml&quot;</span><span class="s1">), </span><span class="s0">null</span><span class="s1">);
+        } </span><span class="s0">catch </span><span class="s1">(Exception e) { 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+ 
+        </span><span class="s2">//Parse argument values</span><span class="s1"> 
+        ArgumentParser.parse(storage, args); 
+        </span><span class="s0">if </span><span class="s1">(args.length == </span><span class="s6">0</span><span class="s1">){ 
+            </span><span class="s0">return </span><span class="s1">storage.getHelp(); 
+        } 
+        String help = storage.getSystemHelp(ArgumentStorage.HELP_SHORT_NAME); 
+        </span><span class="s0">if </span><span class="s1">(help != </span><span class="s0">null</span><span class="s1">){ 
+            </span><span class="s0">return </span><span class="s1">help; 
+        } 
+ 
+        </span><span class="s2">//Check arguments dependencies</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(!storage.isRequireFilled() || storage.isConflict()){ 
+            </span><span class="s0">return </span><span class="s5">&quot;Wrong arguments data : &quot; </span><span class="s1">+ storage.getMessage(); 
+        } 
+ 
+        </span><span class="s2">//Main program</span><span class="s1"> 
+        </span><span class="s0">try </span><span class="s1">{ 
+            Locale locale = </span><span class="s0">new </span><span class="s1">Locale(</span><span class="s5">&quot;en&quot;</span><span class="s1">); 
+            String getValue = storage.getValue(</span><span class="s5">&quot;g&quot;</span><span class="s1">); 
+            String paramValue; 
+            SimpleDateFormat formatter; 
+            </span><span class="s0">if </span><span class="s1">(getValue.equals(</span><span class="s5">&quot;date&quot;</span><span class="s1">)){ 
+                </span><span class="s0">if </span><span class="s1">(storage.isFilled(</span><span class="s5">&quot;df&quot;</span><span class="s1">)){ 
+                    paramValue = storage.getValue(</span><span class="s5">&quot;df&quot;</span><span class="s1">); 
+                    </span><span class="s0">if </span><span class="s1">(paramValue.equals(</span><span class="s5">&quot;long&quot;</span><span class="s1">)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;EEEE, d MMMM, yyyy&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else if </span><span class="s1">(paramValue.equals(</span><span class="s5">&quot;short&quot;</span><span class="s1">)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;yyyy.MM.dd&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return </span><span class="s5">&quot;Error : date format &lt;&quot; </span><span class="s1">+ paramValue + </span><span class="s5">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(storage.isDeclared(</span><span class="s5">&quot;tf&quot;</span><span class="s1">)) { 
+                    </span><span class="s0">return </span><span class="s5">&quot;Error : cant format date to time&quot;</span><span class="s1">; 
+                } </span><span class="s0">else </span><span class="s1">{ 
+                    formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;E, d MMM, yy&quot;</span><span class="s1">, locale); 
+                    </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                } 
+            } </span><span class="s0">else if </span><span class="s1">(getValue.equals(</span><span class="s5">&quot;time&quot;</span><span class="s1">)){ 
+                </span><span class="s0">if </span><span class="s1">(storage.isFilled(</span><span class="s5">&quot;tf&quot;</span><span class="s1">)){ 
+                    paramValue = storage.getValue(</span><span class="s5">&quot;tf&quot;</span><span class="s1">); 
+                    </span><span class="s0">if </span><span class="s1">(paramValue.equals(</span><span class="s5">&quot;24&quot;</span><span class="s1">)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;HH:mm&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else if </span><span class="s1">(paramValue.equals(</span><span class="s5">&quot;12&quot;</span><span class="s1">)){ 
+                        formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;h:m:s a&quot;</span><span class="s1">, locale); 
+                        </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return </span><span class="s5">&quot;Error : time format &lt;&quot; </span><span class="s1">+ paramValue + </span><span class="s5">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(storage.isDeclared(</span><span class="s5">&quot;df&quot;</span><span class="s1">)){ 
+                    </span><span class="s0">return </span><span class="s5">&quot;Error : cant format time to date&quot;</span><span class="s1">; 
+                } </span><span class="s0">else </span><span class="s1">{ 
+                    formatter = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;H:m:s.S z&quot;</span><span class="s1">, locale); 
+                    </span><span class="s0">return </span><span class="s1">formatter.format(</span><span class="s0">new </span><span class="s1">Date(System.currentTimeMillis())); 
+                } 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                </span><span class="s0">return </span><span class="s5">&quot;Error : get command &lt;&quot; </span><span class="s1">+ getValue + </span><span class="s5">&quot;&gt; is unknown&quot;</span><span class="s1">; 
+            } 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentNotFoundException e){ 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+    } 
+} 
+</span></pre>
+
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD>XMLExample.xml</TD></TR></TABLE>
+<pre>
+<span class="s0">&lt;?</span><span class="s1">arguments.xml </span><span class="s3">version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span><span class="s2"></span>
+<span class="s4">&lt;</span><span class="s5">arguments </span><span class="s1">xmlns</span><span class="s3">=&quot;argumentParser&quot;</span><span class="s4">&gt;</span><span class="s2"></span>
+    <span class="s4">&lt;</span><span class="s5">info</span><span class="s4"></span>
+        <span class="s1">description </span><span class="s3">= &quot;This is a example of using argument dependencies.
+        Demonstrator can return current date or time in different formats.
+        Available arguments : </span>&lt;<span class="s3">g(get)</span>&gt;<span class="s3">, </span>&lt;<span class="s3">df(dformat)</span>&gt;<span class="s3">, </span>&lt;<span class="s3">tf(tformat)</span>&gt;<span class="s3">.
+        Arguments are subject to the following restrictions:
+          1. </span>&lt;<span class="s3">g</span>&gt;<span class="s3"> is must be filled;
+          2. </span>&lt;<span class="s3">df</span>&gt;<span class="s3"> and </span>&lt;<span class="s3">tf</span>&gt;<span class="s3"> can be used only with </span>&lt;<span class="s3">g</span>&gt;<span class="s3">;
+          3. </span>&lt;<span class="s3">df</span>&gt;<span class="s3"> and </span>&lt;<span class="s3">tf</span>&gt;<span class="s3"> cant be used at the same time.
+        Also you cant type '-h' for get utility help message.&quot;</span><span class="s4"></span>
+        <span class="s1">example </span><span class="s3">= &quot;Try this:
+          -g
+          -df long
+          -g time -tf 12
+          -g date --dformat short -tf 24
+          -h g&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">argument</span><span class="s4">
+            </span>
+        <span class="s1">shortName</span><span class="s3">=&quot;g&quot;</span><span class="s4">
+            </span>
+        <span class="s1">longName</span><span class="s3">=&quot;get&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredDeclared</span><span class="s3">=&quot;true&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredFilled</span><span class="s3">=&quot;true&quot;</span><span class="s4">
+            </span>
+        <span class="s1">description</span><span class="s3">=&quot;Command to get daytime data. Can be </span>&lt;<span class="s3">time</span>&gt;<span class="s3"> or </span>&lt;<span class="s3">date</span>&gt;<span class="s3">.&quot;</span><span class="s4">
+            </span>
+        <span class="s1">descriptionDetailed</span><span class="s3">=&quot;Command to get daytime data. Type </span>&lt;<span class="s3">time</span>&gt;<span class="s3"> to get current time, or </span>&lt;<span class="s3">date</span>&gt;<span class="s3"> to get current date.&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">argument</span><span class="s4">
+            </span>
+        <span class="s1">shortName</span><span class="s3">=&quot;df&quot;</span><span class="s4">
+            </span>
+        <span class="s1">longName</span><span class="s3">=&quot;dformat&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredDeclared</span><span class="s3">=&quot;false&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredFilled</span><span class="s3">=&quot;true&quot;</span><span class="s4">
+            </span>
+        <span class="s1">parameters</span><span class="s3">=&quot;STRING&quot;</span><span class="s4">
+            </span>
+        <span class="s1">description</span><span class="s3">=&quot;Date format. Can be </span>&lt;<span class="s3">long</span>&gt;<span class="s3"> or </span>&lt;<span class="s3">short</span>&gt;<span class="s3">.&quot;</span><span class="s4">
+            </span>
+        <span class="s1">descriptionDetailed</span><span class="s3">=&quot;Date format. Type </span>&lt;<span class="s3">short</span>&gt;<span class="s3"> for YYYY.MM.DD format, or </span>&lt;<span class="s3">long</span>&gt;<span class="s3"> for full format.&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">argument</span><span class="s4">
+            </span>
+        <span class="s1">shortName</span><span class="s3">=&quot;tf&quot;</span><span class="s4">
+            </span>
+        <span class="s1">longName</span><span class="s3">=&quot;tformat&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredDeclared</span><span class="s3">=&quot;false&quot;</span><span class="s4">
+            </span>
+        <span class="s1">isRequiredFilled</span><span class="s3">=&quot;true&quot;</span><span class="s4">
+            </span>
+        <span class="s1">parameters</span><span class="s3">=&quot;STRING&quot;</span><span class="s4">
+            </span>
+        <span class="s1">description</span><span class="s3">=&quot;Time format. Can be </span>&lt;<span class="s3">12</span>&gt;<span class="s3"> or </span>&lt;<span class="s3">24</span>&gt;<span class="s3">.&quot;</span><span class="s4">
+            </span>
+        <span class="s1">descriptionDetailed</span><span class="s3">=&quot;Time format. Type </span>&lt;<span class="s3">12</span>&gt;<span class="s3"> to get current time in 12h format, or </span>&lt;<span class="s3">24</span>&gt;<span class="s3"> - in 24h format.&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">dependence</span><span class="s4">
+            </span>
+        <span class="s1">nameDependent</span><span class="s3">=&quot;dformat&quot;</span><span class="s4">
+            </span>
+        <span class="s1">nameOn</span><span class="s3">=&quot;get&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">dependence</span><span class="s4">
+            </span>
+        <span class="s1">nameDependent</span><span class="s3">=&quot;tformat&quot;</span><span class="s4">
+            </span>
+        <span class="s1">nameOn</span><span class="s3">=&quot;get&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+    </span>
+    <span class="s4">&lt;</span><span class="s5">conflict</span><span class="s4">
+            </span>
+        <span class="s1">nameFirst</span><span class="s3">=&quot;dformat&quot;</span><span class="s4">
+            </span>
+        <span class="s1">nameSecond</span><span class="s3">=&quot;tformat&quot;</span>
+    <span class="s4">/&gt;</span><span class="s2">
+</span>
+<span class="s4">&lt;/</span><span class="s5">arguments</span><span class="s4">&gt;</span></pre>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?com.github.onlycrab.argParser.arguments.xml version="1.0" encoding="UTF-8"?>
+<arguments xmlns="argParser">
+    <info
+            description = "This is a example of using argument dependencies.\br\Demonstrator can return current date or time in different formats.\br\Available arguments : &lt;g(get)&gt;, &lt;df(dformat)&gt;, &lt;tf(tformat)&gt;.\br\Arguments are subject to the following restrictions:\br\  1. &lt;g&gt; is must be filled;\br\  2. &lt;df&gt; and &lt;tf&gt; can be used only with &lt;g&gt;;\br\  3. &lt;df&gt; and &lt;tf&gt; cant be used at the same time.\br\Also you cant type '-h' for get utility help message."
+            example = "  -g date\br\  -g\br\  -df long\br\  -g time -tf 12\br\  -g date --dformat short -tf 24\br\  -h g"
+    />
+    <argument
+            shortName="g"
+            longName="get"
+            isRequiredDeclared="true"
+            isRequiredFilled="true"
+            description="Command to get daytime data. Can be &lt;time&gt; or &lt;date&gt;."
+            descriptionDetailed="Command to get daytime data. Type &lt;time&gt; to get current time, or &lt;date&gt; to get current date."
+    />
+    <argument
+            shortName="df"
+            longName="dformat"
+            isRequiredDeclared="false"
+            isRequiredFilled="true"
+            parameters="STRING"
+            description="Date format. Can be &lt;long&gt; or &lt;short&gt;."
+            descriptionDetailed="Date format. Type &lt;short&gt; for YYYY.MM.DD format, or &lt;long&gt; for full format."
+    />
+    <argument
+            shortName="tf"
+            longName="tformat"
+            isRequiredDeclared="false"
+            isRequiredFilled="true"
+            parameters="STRING"
+            description="Time format. Can be &lt;12&gt; or &lt;24&gt;."
+            descriptionDetailed="Time format. Type &lt;12&gt; to get current time in 12h format, or &lt;24&gt; - in 24h format."
+    />
+    <dependence
+            nameDependent="dformat"
+            nameOn="get"
+    />
+    <dependence
+            nameDependent="tformat"
+            nameOn="get"
+    />
+    <conflict
+            nameFirst="dformat"
+            nameSecond="tformat"
+    />
+</arguments>

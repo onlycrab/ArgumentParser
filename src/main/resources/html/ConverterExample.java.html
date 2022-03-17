@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>ConverterExample.java</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre>
+<span class="s0">package </span><span class="s1">com.github.onlycrab.argParser.demo;</span>
+
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.Argument;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentStorage;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentException;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentParser;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ConverterException;</span>
+
+<span class="s2">/**
+ * Example to demonstrate the use of the argument value converter.
+ *
+ * @author Roman Rynkovich
+ */</span>
+<span class="s0">class </span><span class="s1">ConverterExample {
+    </span><span class="s0">private static final </span><span class="s1">String TYPE_BOOLEAN = </span><span class="s3">&quot;bool&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String TYPE_INTEGER = </span><span class="s3">&quot;int&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String TYPE_ARRAY = </span><span class="s3">&quot;arr&quot;</span><span class="s1">; 
+ 
+    </span><span class="s0">public static </span><span class="s1">String main(String[] args){ 
+        </span><span class="s2">//Create storage object</span><span class="s1">
+        ArgumentStorage storage = </span><span class="s0">new </span><span class="s1">ArgumentStorage(); 
+        Argument argValue, argType; 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s2">//Add arguments data</span><span class="s1"> 
+            argValue = </span><span class="s0">new </span><span class="s1">Argument(</span><span class="s3">&quot;v&quot;</span><span class="s1">, </span><span class="s3">&quot;value&quot;</span><span class="s1">); 
+            argType = </span><span class="s0">new </span><span class="s1">Argument(</span><span class="s3">&quot;t&quot;</span><span class="s1">, </span><span class="s3">&quot;type&quot;</span><span class="s1">); 
+            storage.add(argValue).add(argType); 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentException e) { 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+ 
+        </span><span class="s2">//Parse argument values</span><span class="s1"> 
+        ArgumentParser.parse(storage, args); 
+ 
+        </span><span class="s2">//Main program</span><span class="s1"> 
+        StringBuilder sb = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+        </span><span class="s0">if </span><span class="s1">(!argType.isFilled()){ 
+            sb.append(</span><span class="s3">&quot;Conversion type is not set</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">); 
+            </span><span class="s0">if </span><span class="s1">(argValue.isFilled()){ 
+                sb.append(</span><span class="s3">&quot;Value : &lt;&quot;</span><span class="s1">).append(argValue.getValue()).append(</span><span class="s3">&quot;&gt;</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">); 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                sb.append(</span><span class="s3">&quot;Value is not set</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">); 
+            } 
+        } </span><span class="s0">else </span><span class="s1">{ 
+            </span><span class="s0">if </span><span class="s1">(!argValue.isFilled()){ 
+                sb.append(</span><span class="s3">&quot;Value is not set</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">); 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                </span><span class="s0">switch </span><span class="s1">(argType.getValue()){ 
+                    </span><span class="s0">case </span><span class="s1">TYPE_BOOLEAN: 
+                        </span><span class="s0">try </span><span class="s1">{ 
+                            </span><span class="s0">boolean </span><span class="s1">boolVal = argValue.getValueConverter( 
+                                    </span><span class="s0">new </span><span class="s1">String[]{</span><span class="s3">&quot;true&quot;</span><span class="s1">, </span><span class="s3">&quot;yes&quot;</span><span class="s1">, </span><span class="s3">&quot;on&quot;</span><span class="s1">, </span><span class="s3">&quot;active&quot;</span><span class="s1">}, 
+                                    </span><span class="s0">new </span><span class="s1">String[]{</span><span class="s3">&quot;false&quot;</span><span class="s1">, </span><span class="s3">&quot;no&quot;</span><span class="s1">, </span><span class="s3">&quot;off&quot;</span><span class="s1">, </span><span class="s3">&quot;inactive&quot;</span><span class="s1">}).toBoolean(); 
+                            sb.append(</span><span class="s3">&quot;Value &lt;&quot;</span><span class="s1">).append(argValue.getValue()).append(</span><span class="s3">&quot;&gt; converted to BOOLEAN as &lt;&quot;</span><span class="s1">) 
+                                    .append(boolVal).append(</span><span class="s3">&quot;&gt;&quot;</span><span class="s1">); 
+                        } </span><span class="s0">catch </span><span class="s1">(ConverterException e) { 
+                            sb.append(e.getMessage()); 
+                        } 
+                        </span><span class="s0">break</span><span class="s1">; 
+                    </span><span class="s0">case </span><span class="s1">TYPE_INTEGER: 
+                        </span><span class="s0">try </span><span class="s1">{ 
+                            </span><span class="s0">int </span><span class="s1">intVal = argValue.getValueConverter().toInt() + </span><span class="s4">1</span><span class="s1">; 
+                            sb.append(</span><span class="s3">&quot;Value &lt;&quot;</span><span class="s1">).append(argValue.getValue()) 
+                                    .append(</span><span class="s3">&quot;&gt; converted to INTEGER, &lt;value&gt; + 1 = &lt;&quot;</span><span class="s1">) 
+                                    .append(String.valueOf(intVal)).append(</span><span class="s3">&quot;&gt;&quot;</span><span class="s1">); 
+                        } </span><span class="s0">catch </span><span class="s1">(ConverterException e) { 
+                            sb.append(e.getMessage()); 
+                        } 
+                        </span><span class="s0">break</span><span class="s1">; 
+                    </span><span class="s0">case </span><span class="s1">TYPE_ARRAY: 
+                        </span><span class="s0">try </span><span class="s1">{ 
+                            String[] arr = argValue.getValueConverter().toArray(); 
+                            sb.append(</span><span class="s3">&quot;Value &lt;&quot;</span><span class="s1">).append(argValue.getValue()).append(</span><span class="s3">&quot;&gt; converted to ARRAY : </span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">) 
+                                    .append(printArr(arr)); 
+                        } </span><span class="s0">catch </span><span class="s1">(ConverterException e) { 
+                            sb.append(e.getMessage()); 
+                        } 
+                        </span><span class="s0">break</span><span class="s1">; 
+                    </span><span class="s0">default</span><span class="s1">: 
+                        sb.append(</span><span class="s3">&quot;Type &lt;&quot;</span><span class="s1">).append(argType.getValue()).append(</span><span class="s3">&quot;&gt; is unknown&quot;</span><span class="s1">); 
+                } 
+            } 
+        } 
+ 
+        </span><span class="s0">return </span><span class="s1">sb.toString(); 
+    } 
+ 
+    </span><span class="s0">private static </span><span class="s1">String printArr(String[] arr){ 
+        </span><span class="s0">if </span><span class="s1">(arr == </span><span class="s0">null</span><span class="s1">) </span><span class="s0">return </span><span class="s3">&quot;&quot;</span><span class="s1">; 
+        </span><span class="s0">if </span><span class="s1">(arr.length == </span><span class="s4">0</span><span class="s1">) </span><span class="s0">return </span><span class="s3">&quot;{}&quot;</span><span class="s1">; 
+        StringBuilder sb = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+        sb.append(</span><span class="s3">&quot;{[0]=&lt;&quot;</span><span class="s1">).append(arr[</span><span class="s4">0</span><span class="s1">]).append(</span><span class="s3">&quot;&gt;&quot;</span><span class="s1">); 
+        </span><span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">1</span><span class="s1">; i &lt; arr.length; i++){ 
+            sb.append(</span><span class="s3">&quot;</span><span class="s0">\n</span><span class="s3">[&quot;</span><span class="s1">).append(i).append(</span><span class="s3">&quot;]=&lt;&quot;</span><span class="s1">).append(arr[</span><span class="s4">0</span><span class="s1">]).append(</span><span class="s3">&quot;&gt;&quot;</span><span class="s1">); 
+        } 
+        </span><span class="s0">return </span><span class="s1">sb.append(</span><span class="s3">&quot;}</span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">).toString(); 
+    } 
+} 
+</span></pre>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>CustomRulesExample.java</title>
+<style type="text/css">
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<pre>
+<span class="s0">package </span><span class="s1">com.github.onlycrab.argParser.demo;</span>
+
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.Argument;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentStorage;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.exceptions.ArgumentException;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.ArgumentParser;</span>
+<span class="s0">import </span><span class="s1">com.github.onlycrab.argParser.arguments.dependencies.Rule;</span>
+
+<span class="s0">import </span><span class="s1">java.util.regex.Pattern;</span>
+
+<span class="s2">/**
+ * Example to demonstrate the use of a custom rules.
+ *
+ * @author Roman Rynkovich
+ */</span>
+<span class="s0">class </span><span class="s1">CustomRulesExample {
+    </span><span class="s0">static </span><span class="s1">String main(String[] args){ 
+        </span><span class="s2">//Create rule</span><span class="s1"> 
+        Rule ruleEmail = </span><span class="s0">new </span><span class="s1">EmailRule(); 
+        </span><span class="s2">//Create storage object</span><span class="s1">
+        ArgumentStorage storage = </span><span class="s0">new </span><span class="s1">ArgumentStorage(</span><span class="s0">true</span><span class="s1">); 
+        Argument argEmail; 
+        </span><span class="s0">try </span><span class="s1">{ 
+            </span><span class="s2">//Add arguments data</span><span class="s1"> 
+            argEmail = </span><span class="s0">new </span><span class="s1">Argument(
+                    </span><span class="s2">//short name</span>
+                    <span class="s3">&quot;e&quot;</span><span class="s1">,
+                    </span><span class="s2">//long name</span>
+                    <span class="s3">&quot;email&quot;</span><span class="s1">,
+                    </span><span class="s2">//valueDefault</span>
+                    <span class="s0">null</span><span class="s1">,
+                    </span><span class="s2">//isRequiredBeDeclared</span>
+                    <span class="s0">true</span><span class="s1">,
+                    </span><span class="s2">//isRequiredBeFilled</span>
+                    <span class="s0">true</span><span class="s1">,
+                    </span><span class="s2">//parameters</span>
+                    <span class="s0">null</span><span class="s1">,
+                    </span><span class="s2">//description</span>
+                    <span class="s3">&quot;Check if value is an email.&quot;</span><span class="s1">,
+                    </span><span class="s2">//descriptionDetailed</span>
+                    <span class="s0">null</span>
+            <span class="s1">);
+ 
+            argEmail.setRequiredBeDeclared(</span><span class="s0">true</span><span class="s1">); 
+            argEmail.setRequiredBeFilled(</span><span class="s0">true</span><span class="s1">); 
+            storage.add(argEmail); 
+ 
+            </span><span class="s2">//Add argument to rule</span><span class="s1"> 
+            ruleEmail.addTarget(argEmail); 
+ 
+            </span><span class="s2">//Add rule to storage object</span><span class="s1">
+            storage.addRule(ruleEmail); 
+        } </span><span class="s0">catch </span><span class="s1">(ArgumentException e) { 
+            </span><span class="s0">return </span><span class="s1">String.format(DemoJFrame.SORRY_TEXT, e.getMessage()); 
+        } 
+ 
+        </span><span class="s2">//Parse argument values</span><span class="s1"> 
+        ArgumentParser.parse(storage, args); 
+ 
+        String help = storage.getSystemHelp(ArgumentStorage.HELP_SHORT_NAME); 
+        </span><span class="s0">if </span><span class="s1">(help != </span><span class="s0">null</span><span class="s1">){ 
+            </span><span class="s0">return </span><span class="s1">help; 
+        } 
+ 
+        </span><span class="s2">//Main program</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(!storage.isRequireFilled()){ 
+            </span><span class="s0">return </span><span class="s3">&quot;Wrong arguments data : &quot; </span><span class="s1">+ storage.getMessage(); 
+        } 
+        </span><span class="s2">//Check rules</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(storage.isRulesSatisfied()){ 
+            </span><span class="s0">return </span><span class="s1">String.format(</span><span class="s3">&quot;Value &lt;%s&gt; is a email.&quot;</span><span class="s1">, argEmail.getValue()); 
+        } </span><span class="s0">else </span><span class="s1">{ 
+            </span><span class="s0">return </span><span class="s1">storage.getMessage(); 
+        } 
+    } 
+ 
+    </span><span class="s2">/** 
+     * Custom rule to check if argument value is email. 
+     */</span><span class="s1"> 
+    </span><span class="s0">private static class </span><span class="s1">EmailRule </span><span class="s0">extends </span><span class="s1">Rule{ 
+        </span><span class="s2">/**Email pattern */</span><span class="s1"> 
+        </span><span class="s0">private final </span><span class="s1">Pattern pattern = Pattern.compile(</span><span class="s3">&quot;^[a-zA-Z0-9_!#$%&amp;’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$&quot;</span><span class="s1">); 
+ 
+        @Override 
+        </span><span class="s0">public boolean </span><span class="s1">isSatisfied() { 
+            clearMessages(); 
+            </span><span class="s0">boolean </span><span class="s1">result = </span><span class="s0">true</span><span class="s1">; 
+            </span><span class="s0">for </span><span class="s1">(Argument target : targets){ 
+                </span><span class="s0">if </span><span class="s1">(target == </span><span class="s0">null</span><span class="s1">){ 
+                    </span><span class="s0">continue</span><span class="s1">; 
+                } </span><span class="s0">else if </span><span class="s1">(!target.isFilled()){ 
+                    </span><span class="s0">continue</span><span class="s1">; 
+                } 
+                </span><span class="s0">if </span><span class="s1">(!pattern.matcher(target.getValue()).matches()){ 
+                    result = </span><span class="s0">false</span><span class="s1">; 
+                    addMessage(String.format(</span><span class="s3">&quot;Value &lt;%s&gt; for argument %s is not a email.&quot;</span><span class="s1">,
+                            target.getValue(), target.getName()));
+                } 
+            } 
+            </span><span class="s0">return </span><span class="s1">result; 
+        } 
+    } 
+} 
+</span></pre>
+</body>
+</html>

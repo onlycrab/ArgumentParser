@@ -1,0 +1,16 @@
+<?com.github.onlycrab.argParser.arguments.xml version="1.0" encoding="UTF-8"?>
+<arguments xmlns="argParser">
+    <dependence
+            nameDependent = "a1"
+            nameOn="a2"
+    />
+    <dependence
+            nameDependent = "at5"
+            nameOn="we2"
+    />
+
+    <conflict
+            nameFirst = "a1"
+            nameSecond= "we2"
+    />
+</arguments>
