@@ -60,7 +60,7 @@ ArgumentStorage storage = new ArgumentStorage();
 storage.read("/path/to/file", "encoding");
 ...
 ```
-You can see the full example of using [XMLExample.java](https://github.com/onlycrab/ArgumentParser/blob/main/src/main/java/com/github/onlycrab/argParser/demo/XMLExample.java).  
+You can see the full example of using [XMLExample.java](https://github.com/onlycrab/ArgumentParser/blob/master/src/main/java/com/github/onlycrab/argParser/demo/XMLExample.java).  
 <a name="usingStandardHelp"></a>
 # Using standard help
 When creating the repository, use the second constructor to use the `h(help)` built-in argument  
@@ -98,7 +98,7 @@ long[] arr = storage.getValueConverter("arg2").toArrayLong();
 The converter has a special relationship with `boolean` - it can convert `strings` to `boolean` according to custom rules. To do this, call it like this  
 `boolean val = storage.getValueConverter("arg1", new String[]{"true", "1", "yes"}, new String[]{"false", "0", "no"})`  
 If the argument is `"true"`, `"1"` or `"yes"` val will be equal to `true`, and, accordingly, for `"false"`, `"0"` or `"no"` val will be equal to `false`.  
-You can also see the example [ConverterExample.java](https://github.com/onlycrab/ArgumentParser/blob/main/src/main/java/com/github/onlycrab/argParser/demo/ConverterExample.java).  
+You can also see the example [ConverterExample.java](https://github.com/onlycrab/ArgumentParser/blob/master/src/main/java/com/github/onlycrab/argParser/demo/ConverterExample.java).  
 <a name="additionalFeatures"></a>
 # Additional features
 <a name="requirementToBeDeclared"></a>
@@ -133,11 +133,11 @@ boolean res = storage.isRequireFilled();
 ...
 ```
 `res` will be `false` no matter which of these arguments are declared or filled.  
-Usage example in code [DependenciesExample.java](https://github.com/onlycrab/ArgumentParser/blob/main/src/main/java/com/github/onlycrab/argParser/demo/DependenciesExample.java).
+Usage example in code [DependenciesExample.java](https://github.com/onlycrab/ArgumentParser/blob/master/src/main/java/com/github/onlycrab/argParser/demo/DependenciesExample.java).
 <a name="conflictBetweenArguments"></a>
 ## 4.Conflict between arguments
 You can make arguments conflict with the `storage.addConflict("arg1", "arg2")` method. In this case, if these arguments are declared at the same time, the `storage.isConflict()` method will return `true`.  
-Usage example in code [DependenciesExample.java](https://github.com/onlycrab/ArgumentParser/blob/main/src/main/java/com/github/onlycrab/argParser/demo/DependenciesExample.java).
+Usage example in code [DependenciesExample.java](https://github.com/onlycrab/ArgumentParser/blob/master/src/main/java/com/github/onlycrab/argParser/demo/DependenciesExample.java).
 <a name="customRules"></a>
 ## 5.Custom rules
 You can create your own rules for arguments and check if the argument values ​​match them after parsing. To do this, extends your rule from the `Rule` class, bind arguments to it, and add the rules to the store.  
@@ -161,7 +161,7 @@ ArgumentParser.parse(storage, args);
 boolean res = storage.isRulesSatisfied(); //check if rules are passed 
 ...
 ```
-You can also see the finished example [CustomRulesExample.java](https://github.com/onlycrab/ArgumentParser/blob/main/src/main/java/com/github/onlycrab/argParser/demo/CustomRulesExample.java).
+You can also see the finished example [CustomRulesExample.java](https://github.com/onlycrab/ArgumentParser/blob/master/src/main/java/com/github/onlycrab/argParser/demo/CustomRulesExample.java).
 <a name="inConclusion"></a>
 # In conclusion
 If you have read down to this point, then the project has aroused some interest in you. Thank you for taking time to view it, and I hope that the project will be useful! 
