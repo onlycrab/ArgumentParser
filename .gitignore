@@ -1,0 +1,6 @@
+/.idea
+*.iml
+*.ttf
+/out
+/exportToHTML
+/target
